@@ -1,82 +1,79 @@
 import json
 import re
-from typing import List, Dict, Optional
+from typing import List, Optional
+from pathlib import Path
 from app.models.log_entry import LogEntry
+from datetime import datetime
 import logging
 
 logger = logging.getLogger(__name__)
 
 class LogParser:
     def __init__(self):
-        # Pattern to split log entries by correlation ID markers
+        # Pattern: **********{UUID}********** JSON **********{UUID}**********
         self.entry_pattern = re.compile(
-            r'\*{10}([a-f0-9\-]{36})\*{10}\s*\n(.*?)\n\*{10}\1\*{10}',
+            r'\*{10}([a-f0-9\-]{36})\*{10}\s*(.*?)\s*\*{10}\1\*{10}',
             re.DOTALL
         )
     
     def parse_file(self, file_path: str) -> List[LogEntry]:
-        """Parse a log file and extract all log entries"""
         try:
-            with open(file_path, 'r', encoding='utf-8') as f:
+            with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
                 content = f.read()
             
-            return self.parse_content(content, file_path)
+            file_name = Path(file_path).name
+            return self.parse_content(content, file_name)
         except Exception as e:
             logger.error(f"Error parsing file {file_path}: {e}")
             return []
     
     def parse_content(self, content: str, file_name: str = "") -> List[LogEntry]:
-        """Parse log content and extract entries"""
         entries = []
         
-        # Find all log entries using regex pattern
-        matches = self.entry_pattern.finditer(content)
-        
-        for match in matches:
+        for match in self.entry_pattern.finditer(content):
             correlation_id = match.group(1)
             json_content = match.group(2).strip()
             
-            try:
-                log_data = json.loads(json_content)
-                log_data['file_name'] = file_name
-                
-                # Create LogEntry object
-                log_entry = LogEntry(**log_data)
-                entries.append(log_entry)
-                
-            except json.JSONDecodeError as e:
-                logger.warning(f"Failed to parse JSON for correlationId {correlation_id}: {e}")
-            except Exception as e:
-                logger.error(f"Error creating LogEntry for {correlation_id}: {e}")
+            entry = self._parse_single_json(correlation_id, json_content, file_name)
+            if entry:
+                entries.append(entry)
         
         return entries
     
-    def parse_single_entry(self, content: str) -> Optional[LogEntry]:
-        """Parse a single log entry"""
-        entries = self.parse_content(content)
-        return entries[0] if entries else None
+    def parse_single_entry(self, correlation_id: str, json_content: str, file_name: str = "") -> Optional[LogEntry]:
+        return self._parse_single_json(correlation_id, json_content, file_name)
     
-    def parse_incremental(self, content: str, last_position: int) -> tuple[List[LogEntry], int]:
-        """
-        Parse new content from a specific position
-        Returns: (list of new entries, new position)
-        """
-        if last_position >= len(content):
-            return [], last_position
-        
-        # Get only new content
-        new_content = content[last_position:]
-        
-        # Parse new entries
-        entries = self.parse_content(new_content)
-        
-        # Return entries and new position
-        return entries, len(content)
-    
-    def validate_log_structure(self, log_data: dict) -> bool:
-        """Validate if log data has required fields"""
-        required_fields = ['correlationId', 'timestamp', 'apiName', 'serviceName']
-        return all(field in log_data for field in required_fields)
+    def _parse_single_json(self, correlation_id: str, json_content: str, file_name: str) -> Optional[LogEntry]:
+        try:
+            log_data = json.loads(json_content)
+            
+            required_fields = ['correlationId', 'apiName', 'serviceName']
+            missing_fields = [field for field in required_fields if field not in log_data]
+            
+            if missing_fields:
+                logger.warning(
+                    f"Entry missing required fields: {missing_fields} "
+                    f"for correlationId={correlation_id}"
+                )
+                return None
+            
+            if log_data.get('correlationId') != correlation_id:
+                logger.warning(
+                    f"Correlation ID mismatch: "
+                    f"delimiter={correlation_id}, json={log_data.get('correlationId')}"
+                )
+            
+            log_data['file_name'] = file_name
+            log_data['parsed_at'] = datetime.utcnow().isoformat()
+            
+            return LogEntry(**log_data)
+            
+        except json.JSONDecodeError as e:
+            logger.warning(f"JSON parse error for {correlation_id}: {e}")
+            return None
+        except Exception as e:
+            logger.error(f"Error creating LogEntry for {correlation_id}: {e}")
+            return None
 
 # Global parser instance
 log_parser = LogParser()
