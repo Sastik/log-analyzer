@@ -1,0 +1,33 @@
+log-analyzer-backend/
+├── app/
+│   ├── __init__.py
+│   ├── main.py
+│   ├── config.py
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── log_entry.py
+│   │   └── query_models.py
+│   ├── core/
+│   │   ├── __init__.py
+│   │   ├── file_watcher.py
+│   │   ├── log_parser.py
+│   │   ├── query_engine.py
+│   │   └── cache_manager.py
+│   ├── ai/
+│   │   ├── __init__.py
+│   │   ├── nl_processor.py
+│   │   ├── anomaly_detector.py
+│   │   └── model_manager.py
+│   ├── api/
+│   │   ├── __init__.py
+│   │   ├── logs.py
+│   │   ├── analytics.py
+│   │   ├── ai_query.py
+│   │   └── websocket.py
+│   └── database/
+│       ├── __init__.py
+│       ├── connection.py
+│       └── repositories.py
+├── requirements.txt
+├── .env
+└── README.md

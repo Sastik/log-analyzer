@@ -1,0 +1,124 @@
+@use '../../styles/variables' as *;
+
+.header {
+  height: $header-height;
+  background: $white;
+  border-bottom: 1px solid $border-light;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 $spacing-xl;
+  position: sticky;
+  top: 0;
+  z-index: $z-sticky;
+  box-shadow: $shadow-sm;
+
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: $spacing-lg;
+  }
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+
+    &-icon {
+      color: $primary-600;
+    }
+
+    &-text {
+      h1 {
+        font-size: $font-size-xl;
+        font-weight: $font-weight-bold;
+        color: $text-primary;
+        line-height: 1.2;
+      }
+
+      span {
+        font-size: $font-size-xs;
+        color: $text-tertiary;
+        font-weight: $font-weight-medium;
+      }
+    }
+  }
+
+  &__search {
+    flex: 1;
+    max-width: 500px;
+    position: relative;
+    margin: 0 $spacing-2xl;
+
+    &-icon {
+      position: absolute;
+      left: $spacing-md;
+      top: 50%;
+      transform: translateY(-50%);
+      color: $text-tertiary;
+    }
+
+    &-input {
+      width: 100%;
+      padding: $spacing-sm $spacing-md $spacing-sm 42px;
+      border: 1px solid $border-medium;
+      border-radius: $radius-lg;
+      font-size: $font-size-sm;
+      transition: all $transition-fast;
+      background: $bg-secondary;
+
+      &::placeholder {
+        color: $text-tertiary;
+      }
+
+      &:focus {
+        border-color: $primary-500;
+        background: $white;
+        box-shadow: 0 0 0 3px rgba($primary-500, 0.1);
+      }
+    }
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+  }
+
+  &__icon-btn {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: $radius-lg;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $text-secondary;
+    background: transparent;
+    transition: all $transition-fast;
+
+    &:hover {
+      background: $bg-secondary;
+      color: $primary-600;
+    }
+  }
+
+  &__badge {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: $error-500;
+    color: $white;
+    font-size: 10px;
+    font-weight: $font-weight-bold;
+    min-width: 16px;
+    height: 16px;
+    border-radius: $radius-full;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+  }
+
+  
+}

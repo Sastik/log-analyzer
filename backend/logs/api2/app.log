@@ -1,0 +1,138 @@
+**********f9e8d7c6-aaaa-bbbb-cccc-ddddeeeeffff**********
+{
+  "timestamp": "2025-11-24T10:05:12+02:00",
+  "logLevel": "ERROR",
+  "apiName": "JobApi",
+  "serviceName": "fetchJobStatistics",
+  "thread": "http-nio-7023-exec-9",
+  "logger": "c.t.digital.audit.logger.FileLogger",
+  "sessionId": "a1b2c3d4-1111-2222-3333-444455556666",
+  "correlationId": "f9e8d7c6-aaaa-bbbb-cccc-ddddeeeeffff",
+  "type": "in",
+  "partyId": null,
+  "request": [
+    {
+      "userId": "27",
+      "role": null,
+      "noOfDaysMarker": null,
+      "skill": null,
+      "province": null,
+      "jobType": null,
+      "isNotification": true,
+      "notificationStatus": "Unread",
+      "deviceType": "WEB",
+      "category": null,
+      "isTenderApplicable": false
+    }
+  ],
+  "response": {
+    "code": "0",
+    "message": "",
+    "extendedMessage": null,
+    "status": "SUCCESS",
+    "hasError": false,
+    "responsePayload": {
+      "newJobCount": 2,
+      "unAssignedJobCount": 1,
+      "inprogressJobCount": 3,
+      "acceptedJobCount": 4,
+      "completedJobCount": 10,
+      "closedJobCount": 1,
+      "applicableCompletedJobCount": null,
+      "skillBasedCount": null,
+      "notificationCount": 120,
+      "tenderJobCount": null,
+      "cancelJobCount": 0
+    }
+  },
+  "status": "SUCCESS",
+  "errorMessage": null,
+  "errorTrace": null,
+  "durationMs": 15,
+  "url": "https://insurancespuat.standardbank.co.za/job/common/fetchJobStatistics",
+  "logTime": "Mon Nov 24 10:05:12 SAST 2025",
+  "headerlog": {
+        "timestamp": "2025-11-24T09:15:58+02:00",
+        "logLevel": "ERROR",
+        "application": "JobApi",
+        "thread": "http-nio-7023-exec-7",
+        "logger": "c.t.digital.audit.logger.FileLogger",
+        "sessionId": "d8d079b8-ab9f-423a-ad82-1847e8050010",
+        "correlationId": "81e03365-7fa3-4a25-8d16-2a9286d8aedb",
+        "apkVersion": null,
+        "deviceName": null,
+        "digitalPlatform": "WEB",
+        "deviceVersion": null,
+        "host": "insurancespuat.standardbank.co.za",
+        "screenName": null
+    }
+}
+**********f9e8d7c6-aaaa-bbbb-cccc-ddddeeeeffff**********
+**********a7c1e2f3-9999-8888-7777-666655554444**********
+{
+  "timestamp": "2025-12-01T14:22:45+05:30",
+  "logLevel": "INFO",
+  "apiName": "UserApi",
+  "serviceName": "getUserDashboard",
+  "thread": "http-nio-8080-exec-4",
+  "logger": "com.company.platform.audit.FileLogger",
+  "sessionId": "bb22cc33-4444-5555-6666-777788889999",
+  "correlationId": "a7c1e2f3-9999-8888-7777-666655554444",
+  "type": "out",
+  "partyId": "USER_1029",
+  "request": [
+    {
+      "userId": "1029",
+      "role": "ADMIN",
+      "noOfDaysMarker": 30,
+      "skill": "JAVA",
+      "province": "Gauteng",
+      "jobType": "FULL_TIME",
+      "isNotification": false,
+      "notificationStatus": "Read",
+      "deviceType": "MOBILE",
+      "category": "IT",
+      "isTenderApplicable": true
+    }
+  ],
+  "response": {
+    "code": "200",
+    "message": "Dashboard fetched successfully",
+    "extendedMessage": null,
+    "status": "SUCCESS",
+    "hasError": false,
+    "responsePayload": {
+      "activeJobCount": 7,
+      "pendingJobCount": 2,
+      "inprogressJobCount": 5,
+      "acceptedJobCount": 6,
+      "completedJobCount": 18,
+      "closedJobCount": 3,
+      "notificationCount": 45,
+      "cancelJobCount": 1
+    }
+  },
+  "status": "SUCCESS",
+  "errorMessage": null,
+  "errorTrace": null,
+  "durationMs": 28,
+  "url": "https://api.companydomain.com/user/dashboard/get",
+  "logTime": "Mon Dec 01 14:22:45 IST 2025",
+  "headerlog": {
+    "timestamp": "2025-12-01T14:22:44+05:30",
+    "logLevel": "INFO",
+    "application": "UserApi",
+    "thread": "http-nio-8080-exec-4",
+    "logger": "com.company.platform.audit.FileLogger",
+    "sessionId": "bb22cc33-4444-5555-6666-777788889999",
+    "correlationId": "a7c1e2f3-9999-8888-7777-666655554444",
+    "apkVersion": "3.4.1",
+    "deviceName": "Samsung Galaxy S23",
+    "digitalPlatform": "MOBILE",
+    "deviceVersion": "Android 14",
+    "host": "api.companydomain.com",
+    "screenName": "UserDashboard"
+  }
+}
+**********a7c1e2f3-9999-8888-7777-666655554444**********
+

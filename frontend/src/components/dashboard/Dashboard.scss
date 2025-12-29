@@ -1,0 +1,176 @@
+@use '../../styles/variables' as *;
+
+.dashboard {
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: $spacing-xl;
+  }
+
+  &__title {
+    font-size: $font-size-3xl;
+    font-weight: $font-weight-bold;
+    color: $text-primary;
+    margin-bottom: $spacing-xs;
+  }
+
+  &__subtitle {
+    font-size: $font-size-base;
+    color: $text-tertiary;
+  }
+
+  &__refresh {
+    padding: $spacing-sm $spacing-lg;
+    background: $primary-500;
+    color: $white;
+    border-radius: $radius-lg;
+    font-weight: $font-weight-medium;
+    font-size: $font-size-sm;
+    transition: all $transition-fast;
+
+    &:hover {
+      background: $primary-600;
+      transform: translateY(-1px);
+      box-shadow: $shadow-md;
+    }
+  }
+
+  &__stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: $spacing-lg;
+    margin-bottom: $spacing-xl;
+  }
+
+  &__charts {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: $spacing-lg;
+  }
+
+  &__chart {
+    &--full {
+      grid-column: 1 / -1;
+    }
+  }
+}
+
+.dashboard-loading,
+.dashboard-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: $spacing-lg;
+  color: $text-tertiary;
+
+  .spinner {
+    color: $primary-500;
+  }
+}
+
+.retry-btn {
+  padding: $spacing-sm $spacing-xl;
+  background: $primary-500;
+  color: $white;
+  border-radius: $radius-lg;
+  font-weight: $font-weight-medium;
+
+  &:hover {
+    background: $primary-600;
+  }
+}
+
+.top-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    padding: $spacing-md;
+    background: $bg-secondary;
+    border-radius: $radius-md;
+    transition: all $transition-fast;
+
+    &:hover {
+      background: $bg-tertiary;
+      transform: translateX(4px);
+    }
+  }
+
+  &__rank {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, $primary-500, $secondary-500);
+    color: $white;
+    border-radius: $radius-md;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: $font-weight-bold;
+    font-size: $font-size-sm;
+    flex-shrink: 0;
+  }
+
+  &__name {
+    flex: 1;
+    font-weight: $font-weight-medium;
+    color: $text-primary;
+  }
+
+  &__value {
+    font-weight: $font-weight-semibold;
+    color: $primary-600;
+  }
+}
+
+.error-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+
+  &__item {
+    display: flex;
+    align-items: flex-start;
+    gap: $spacing-md;
+    padding: $spacing-md;
+    background: $error-50;
+    border-left: 3px solid $error-500;
+    border-radius: $radius-md;
+  }
+
+  &__icon {
+    color: $error-500;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  &__message {
+    flex: 1;
+    font-size: $font-size-sm;
+    color: $text-primary;
+    word-break: break-word;
+  }
+
+  &__count {
+    background: $error-500;
+    color: $white;
+    padding: 2px 8px;
+    border-radius: $radius-full;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-bold;
+    flex-shrink: 0;
+  }
+}
+
+.empty-message {
+  text-align: center;
+  padding: $spacing-2xl;
+  color: $text-tertiary;
+  font-size: $font-size-sm;
+}
