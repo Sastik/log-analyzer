@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     # Redis
     REDIS_HOST: str
     REDIS_PORT: int
+    REDIS_USER: str
     REDIS_PASSWORD: str
     REDIS_DB: int = 0
     

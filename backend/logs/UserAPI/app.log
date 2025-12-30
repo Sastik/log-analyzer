@@ -138,3 +138,73 @@
     }
 }
 **********81e01234-7fa3-4a25-8d16-2f5286d8aedb**********
+*********11223344-aaaa-pppp-dddd-eeeeffff0000**********
+{
+  "timestamp": "2025-11-24T11:18:44+02:00",
+  "logLevel": "ERROR",
+  "apiName": "CommonAPI",
+  "serviceName": "fetchCommonStatistics",
+  "thread": "http-nio-7023-exec-11",
+  "logger": "c.t.digital.audit.logger.FileLogger",
+  "sessionId": "bbccdd11-5555-6666-7777-88889999aaaa",
+  "correlationId": "11223344-aaaa-pppp-dddd-eeeeffff0000",
+  "type": "in",
+  "partyId": null,
+  "request": [
+    {
+      "userId": "28",
+      "role": null,
+      "noOfDaysMarker": null,
+      "skill": null,
+      "province": null,
+      "jobType": null,
+      "isNotification": true,
+      "notificationStatus": "Unread",
+      "deviceType": "WEB",
+      "category": null,
+      "isTenderApplicable": false
+    }
+  ],
+  "response": {
+    "code": "0",
+    "message": "",
+    "extendedMessage": null,
+    "status": "SUCCESS",
+    "hasError": false,
+    "responsePayload": {
+      "newJobCount": 0,
+      "unAssignedJobCount": 0,
+      "inprogressJobCount": 1,
+      "acceptedJobCount": 2,
+      "completedJobCount": 6,
+      "closedJobCount": 0,
+      "applicableCompletedJobCount": null,
+      "skillBasedCount": null,
+      "notificationCount": 45,
+      "tenderJobCount": null,
+      "cancelJobCount": 1
+    }
+  },
+  "status": "SUCCESS",
+  "errorMessage": null,
+  "errorTrace": null,
+  "durationMs": 9,
+  "url": "https://insurancespuat.standardbank.co.za/job/common/fetchJobStatistics",
+  "logTime": "Mon Nov 24 11:18:44 SAST 2025",
+   "headerlog": {
+        "timestamp": "2025-11-24T09:15:58+02:00",
+        "logLevel": "ERROR",
+        "application": "JobApi",
+        "thread": "http-nio-7023-exec-7",
+        "logger": "c.t.digital.audit.logger.FileLogger",
+        "sessionId": "d8d079b8-ab9f-423a-ad82-1847e8050010",
+        "correlationId": "11223344-aaaa-pppp-dddd-eeeeffff0000",
+        "apkVersion": null,
+        "deviceName": null,
+        "digitalPlatform": "WEB",
+        "deviceVersion": null,
+        "host": "insurancespuat.standardbank.co.za",
+        "screenName": null
+    }
+}
+**********11223344-aaaa-cccc-dddd-eeeeffff0000**********

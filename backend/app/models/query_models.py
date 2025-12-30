@@ -3,44 +3,38 @@ from typing import Optional, List
 from datetime import datetime
 
 class LogFilter(BaseModel):
-    correlationId: Optional[str] = None
-    apiName: Optional[str] = None
-    serviceName: Optional[str] = None
-    sessionId: Optional[str] = None
-    hasError: Optional[str] = None
-    logLevel: Optional[str] = None
-    startDate: Optional[datetime] = None
-    endDate: Optional[datetime] = None
-    page: int = Field(default=1, ge=1)
-    pageSize: int = Field(default=50, ge=1, le=500)
-    
-class LogResponse(BaseModel):
-    logs: List[dict]
-    total: int
-    page: int
-    pageSize: int
-    totalPages: int
+    correlation_id: Optional[str] = None
+    api_name: Optional[str] = None
+    service_name: Optional[str] = None
+    log_level: Optional[str] = None
+    start_date: Optional[datetime] = None
+    end_date: Optional[datetime] = None
+    session_id: Optional[str] = None
+    limit: int = Field(default=100, le=1000)
+    offset: int = Field(default=0, ge=0)
 
-class AnalyticsFilter(BaseModel):
-    startDate: Optional[datetime] = None
-    endDate: Optional[datetime] = None
-    apiName: Optional[str] = None
-    serviceName: Optional[str] = None
+class LogResponse(BaseModel):
+    total: int
+    logs: List[dict]
+    from_cache: bool
+    from_db: bool
+
+class ErrorStatsResponse(BaseModel):
+    api_name: str
+    error_count: int
+    percentage: float
 
 class AnalyticsResponse(BaseModel):
-    totalLogs: int
-    errorCount: int
-    successCount: int
-    avgDurationMs: float
-    apiBreakdown: dict
-    serviceBreakdown: dict
-    errorBreakdown: dict
-    timeSeriesData: List[dict]
+    total_logs: int
+    error_count: int
+    api_breakdown: List[dict]
+    service_breakdown: List[dict]
+    error_rate: float
 
-class CorrelationLogRequest(BaseModel):
-    correlationId: str
-    
-class HealthResponse(BaseModel):
-    status: str
-    timestamp: datetime
-    services: dict
+class LiveLogUpdate(BaseModel):
+    correlation_id: str
+    timestamp: str
+    log_level: str
+    api_name: str
+    service_name: str
+    message: str

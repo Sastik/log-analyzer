@@ -4,25 +4,24 @@ from datetime import datetime
 from enum import Enum
 
 class LogLevel(str, Enum):
-    ERROR = "ERROR"
-    WARN = "WARN"
-    INFO = "INFO"
     DEBUG = "DEBUG"
-    TRACE = "TRACE"
+    INFO = "INFO"
+    WARN = "WARN"
+    ERROR = "ERROR"
+    FATAL = "FATAL"
 
-class LogType(str, Enum):
+class RequestType(str, Enum):
     IN = "in"
     OUT = "out"
-    ERROR = "error"
 
 class HeaderLog(BaseModel):
     timestamp: str
-    logLevel: Optional[str] = None
-    application: Optional[str] = None
-    thread: Optional[str] = None
-    logger: Optional[str] = None
-    sessionId: Optional[str] = None
-    correlationId: Optional[str] = None
+    logLevel: str
+    application: str
+    thread: str
+    logger: str
+    sessionId: str
+    correlationId: str
     apkVersion: Optional[str] = None
     deviceName: Optional[str] = None
     digitalPlatform: Optional[str] = None
@@ -30,22 +29,32 @@ class HeaderLog(BaseModel):
     host: Optional[str] = None
     screenName: Optional[str] = None
 
+class ResponsePayload(BaseModel):
+    class Config:
+        extra = "allow"
+
+class Response(BaseModel):
+    code: Optional[str] = None
+    message: Optional[str] = None
+    extendedMessage: Optional[str] = None
+    status: Optional[str] = None
+    hasError: Optional[bool] = None
+    responsePayload: Optional[Dict[str, Any]] = None
+
 class LogEntry(BaseModel):
-    # Required fields
-    correlationId: str
     timestamp: str
+    logLevel: str
     apiName: str
     serviceName: str
-    
-    # Optional fields
-    thread: Optional[str] = None
-    logger: Optional[str] = None
-    sessionId: Optional[str] = None
-    type: Optional[str] = None
+    thread: str
+    logger: str
+    sessionId: str
+    correlationId: str
+    type: str
     partyId: Optional[str] = None
     request: Optional[List[Dict[str, Any]]] = None
-    response: Optional[Dict[str, Any]] = None
-    hasError: Optional[str] = None
+    response: Optional[Response] = None
+    status: Optional[str] = None
     errorMessage: Optional[str] = None
     errorTrace: Optional[str] = None
     durationMs: Optional[int] = None
@@ -53,7 +62,31 @@ class LogEntry(BaseModel):
     logTime: Optional[str] = None
     headerlog: Optional[HeaderLog] = None
     
-    # For database storage
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "timestamp": "2025-11-24T09:15:58+02:00",
+                "logLevel": "ERROR",
+                "apiName": "JobApi",
+                "serviceName": "fetchJobStatistics",
+                "correlationId": "81e03365-7fa3-4a25-8d16-2a9286d8aedb"
+            }
+        }
+
+class LogEntryDB(BaseModel):
+    """Database model representation"""
     id: Optional[int] = None
+    correlation_id: str
+    timestamp: datetime
+    log_level: str
+    api_name: str
+    service_name: str
+    session_id: str
+    log_data: Dict[str, Any]  # Full JSON
+    error_message: Optional[str] = None
+    error_trace: Optional[str] = None
+    duration_ms: Optional[int] = None
     created_at: Optional[datetime] = None
-    file_name: Optional[str] = None
+    
+    class Config:
+        from_attributes = True
