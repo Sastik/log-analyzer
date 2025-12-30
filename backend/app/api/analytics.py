@@ -6,9 +6,7 @@ from app.database.connection import get_db
 from app.database.repositories import LogRepository
 from app.models.query_models import ErrorStatsResponse, AnalyticsResponse
 from app.core.cache_manager import cache_manager
-import logging
 
-logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/analytics", tags=["analytics"])
 
@@ -33,7 +31,7 @@ async def get_analytics_overview(
         return AnalyticsResponse(**analytics)
         
     except Exception as e:
-        logger.error(f"Error fetching analytics: {e}")
+        print(f"Error fetching analytics: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/errors", response_model=List[ErrorStatsResponse])
@@ -58,7 +56,7 @@ async def get_error_stats(
         return [ErrorStatsResponse(**stat) for stat in error_stats]
         
     except Exception as e:
-        logger.error(f"Error fetching error stats: {e}")
+        print(f"Error fetching error stats: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/api-performance")
@@ -124,7 +122,7 @@ async def get_api_performance(
         return performance_data
         
     except Exception as e:
-        logger.error(f"Error fetching API performance: {e}")
+        print(f"Error fetching API performance: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/service-performance")
@@ -194,7 +192,7 @@ async def get_service_performance(
         return service_data
         
     except Exception as e:
-        logger.error(f"Error fetching service performance: {e}")
+        print(f"Error fetching service performance: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/cache-stats")
@@ -210,5 +208,5 @@ async def get_cache_stats():
         }
         
     except Exception as e:
-        logger.error(f"Error fetching cache stats: {e}")
+        print(f"Error fetching cache stats: {e}")
         raise HTTPException(status_code=500, detail=str(e))

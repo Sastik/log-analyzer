@@ -3,9 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import QueuePool
 from app.config import settings
-import logging
 
-logger = logging.getLogger(__name__)
 
 # Create SQLAlchemy engine
 engine = create_engine(

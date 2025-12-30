@@ -1,10 +1,7 @@
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 from typing import List, Dict, Any, Set
 import json
-import logging
-import asyncio
 
-logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -20,7 +17,7 @@ class WebSocketManager:
         await websocket.accept()
         self.active_connections.append(websocket)
         self.subscriptions[websocket] = set()
-        logger.info(f"New WebSocket connection. Total: {len(self.active_connections)}")
+        print(f"New WebSocket connection. Total: {len(self.active_connections)}")
     
     def disconnect(self, websocket: WebSocket):
         """Remove WebSocket connection"""
@@ -28,7 +25,7 @@ class WebSocketManager:
             self.active_connections.remove(websocket)
         if websocket in self.subscriptions:
             del self.subscriptions[websocket]
-        logger.info(f"WebSocket disconnected. Total: {len(self.active_connections)}")
+        print(f"WebSocket disconnected. Total: {len(self.active_connections)}")
     
     async def broadcast_log(self, log_data: Dict[str, Any]):
         """Broadcast new log to all connected clients"""
@@ -57,7 +54,7 @@ class WebSocketManager:
             except WebSocketDisconnect:
                 disconnected.append(connection)
             except Exception as e:
-                logger.error(f"Error broadcasting to client: {e}")
+                print(f"Error broadcasting to client: {e}")
                 disconnected.append(connection)
         
         # Remove disconnected clients
@@ -87,7 +84,7 @@ class WebSocketManager:
         try:
             await websocket.send_json(message)
         except Exception as e:
-            logger.error(f"Error sending personal message: {e}")
+            print(f"Error sending personal message: {e}")
 
 # Singleton instance
 websocket_manager = WebSocketManager()
@@ -149,14 +146,14 @@ async def websocket_endpoint(websocket: WebSocket):
                     )
                 
             except json.JSONDecodeError:
-                logger.warning("Invalid JSON received from client")
+                print("Invalid JSON received from client")
             except Exception as e:
-                logger.error(f"Error processing client message: {e}")
+                print(f"Error processing client message: {e}")
     
     except WebSocketDisconnect:
         websocket_manager.disconnect(websocket)
     except Exception as e:
-        logger.error(f"WebSocket error: {e}")
+        print(f"WebSocket error: {e}")
         websocket_manager.disconnect(websocket)
 
 @router.get("/ws/status")

@@ -1,4 +1,3 @@
-import logging
 from typing import List, Dict, Any, Tuple
 from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
@@ -7,7 +6,6 @@ from app.core.cache_manager import cache_manager
 from app.database.repositories import LogRepository
 from app.config import settings
 
-logger = logging.getLogger(__name__)
 
 class QueryEngine:
     
@@ -126,7 +124,7 @@ class QueryEngine:
             return paginated_logs, len(logs)
             
         except Exception as e:
-            logger.error(f"Error querying cache: {e}")
+            print(f"Error querying cache: {e}")
             return [], 0
     
     def _query_db(self, db: Session, filters: LogFilter) -> Tuple[List[Dict], int]:
@@ -135,7 +133,7 @@ class QueryEngine:
             logs, total = LogRepository.get_logs_by_filter(db, filters)
             return logs, total
         except Exception as e:
-            logger.error(f"Error querying database: {e}")
+            print(f"Error querying database: {e}")
             return [], 0
     
     def _merge_results(self, cache_logs: List[Dict], db_logs: List[Dict]) -> Tuple[List[Dict], int]:
@@ -166,7 +164,7 @@ class QueryEngine:
             return result, len(result)
             
         except Exception as e:
-            logger.error(f"Error merging results: {e}")
+            print(f"Error merging results: {e}")
             return cache_logs + db_logs, len(cache_logs) + len(db_logs)
     
     def _filter_by_date(self, logs: List[Dict], start_date: datetime, end_date: datetime) -> List[Dict]:
@@ -187,7 +185,7 @@ class QueryEngine:
                     
                     filtered.append(log)
             except Exception as e:
-                logger.warning(f"Error parsing timestamp: {e}")
+                print(f"Error parsing timestamp: {e}")
                 continue
         
         return filtered

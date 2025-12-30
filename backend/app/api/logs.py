@@ -6,9 +6,7 @@ from app.database.connection import get_db
 from app.models.query_models import LogFilter, LogResponse
 from app.core.query_engine import query_engine
 from app.core.cache_manager import cache_manager
-import logging
 
-logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/logs", tags=["logs"])
 
@@ -25,10 +23,6 @@ async def get_logs(
     offset: int = Query(0, ge=0, description="Offset for pagination"),
     db: Session = Depends(get_db)
 ):
-    """
-    Get logs with optional filters
-    Searches both Redis cache and PostgreSQL database
-    """
     try:
         filters = LogFilter(
             correlation_id=correlation_id,
@@ -46,7 +40,7 @@ async def get_logs(
         return response
         
     except Exception as e:
-        logger.error(f"Error fetching logs: {e}")
+        print(f"Error fetching logs: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/{correlation_id}")
@@ -82,7 +76,7 @@ async def get_log_by_correlation_id(
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Error fetching log {correlation_id}: {e}")
+        print(f"Error fetching log {correlation_id}: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/trace/{correlation_id}")
@@ -118,7 +112,7 @@ async def get_error_trace(
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Error fetching error trace: {e}")
+        print(f"Error fetching error trace: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/request-response/{correlation_id}")
@@ -156,5 +150,5 @@ async def get_request_response(
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Error fetching request/response: {e}")
+        print(f"Error fetching request/response: {e}")
         raise HTTPException(status_code=500, detail=str(e))

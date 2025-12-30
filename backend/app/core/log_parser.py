@@ -1,10 +1,8 @@
 import json
 import re
-import logging
 from typing import Optional, Dict, Any
 from datetime import datetime
 
-logger = logging.getLogger(__name__)
 
 class LogParser:
     
@@ -45,7 +43,7 @@ class LogParser:
                     json_lines.append(line)
             
             if not json_lines:
-                logger.warning(f"No JSON content found for correlation_id: {correlation_id}")
+                print(f"No JSON content found for correlation_id: {correlation_id}")
                 return None
             
             json_str = '\n'.join(json_lines)
