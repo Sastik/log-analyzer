@@ -37,15 +37,6 @@ class LogEntryTable(Base):
     duration_ms = Column(Integer, nullable=True)
     created_at = Column(DateTime, server_default='NOW()')
 
-def init_db():
-    """Initialize database tables"""
-    try:
-        Base.metadata.create_all(bind=engine)
-        logger.info("Database tables created successfully")
-    except Exception as e:
-        logger.error(f"Error creating database tables: {e}")
-        raise
-
 def get_db():
     """Dependency for FastAPI routes"""
     db = SessionLocal()

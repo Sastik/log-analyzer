@@ -1,11 +1,8 @@
 import redis
 import json
-import logging
 from typing import Optional, Dict, Any, List
-from datetime import timedelta
 from app.config import settings
 
-logger = logging.getLogger(__name__)
 
 class CacheManager:
     def __init__(self):
@@ -17,7 +14,7 @@ class CacheManager:
             username=settings.REDIS_USER,
             password=settings.REDIS_PASSWORD
         )
-        self.ttl = settings.LOG_FILE_RETENTION_DAYS * 24 * 60 * 60  # Convert days to seconds
+        self.ttl = settings.LOG_FILE_RETENTION_DAYS * 24 * 60 * 60
     
     def set_log(self, correlation_id: str, log_data: Dict[str, Any]) -> bool:
         """Store log entry in Redis with correlationId as key"""
@@ -25,10 +22,9 @@ class CacheManager:
             key = f"log:{correlation_id}"
             value = json.dumps(log_data, default=str)
             self.redis_client.setex(key, self.ttl, value)
-            logger.debug(f"Cached log for correlation_id: {correlation_id}")
             return True
         except Exception as e:
-            logger.error(f"Error caching log {correlation_id}: {e}")
+            print(f"Error caching log {correlation_id}: {e}")
             return False
     
     def get_log(self, correlation_id: str) -> Optional[Dict[str, Any]]:
@@ -40,7 +36,7 @@ class CacheManager:
                 return json.loads(data)
             return None
         except Exception as e:
-            logger.error(f"Error retrieving log {correlation_id}: {e}")
+            print(f"Error retrieving log {correlation_id}: {e}")
             return None
     
     def get_logs_by_pattern(self, pattern: str = "log:*") -> List[Dict[str, Any]]:
@@ -57,7 +53,7 @@ class CacheManager:
             
             return logs
         except Exception as e:
-            logger.error(f"Error retrieving logs by pattern: {e}")
+            print(f"Error retrieving logs by pattern: {e}")
             return []
     
     def search_logs(self, 
@@ -98,7 +94,7 @@ class CacheManager:
             return filtered_logs[:limit]
             
         except Exception as e:
-            logger.error(f"Error searching logs in cache: {e}")
+            print(f"Error searching logs in cache: {e}")
             return []
     
     def delete_log(self, correlation_id: str) -> bool:
@@ -106,10 +102,9 @@ class CacheManager:
         try:
             key = f"log:{correlation_id}"
             self.redis_client.delete(key)
-            logger.debug(f"Deleted log for correlation_id: {correlation_id}")
             return True
         except Exception as e:
-            logger.error(f"Error deleting log {correlation_id}: {e}")
+            print(f"Error deleting log {correlation_id}: {e}")
             return False
     
     def get_total_logs(self) -> int:
@@ -118,7 +113,7 @@ class CacheManager:
             keys = self.redis_client.keys("log:*")
             return len(keys)
         except Exception as e:
-            logger.error(f"Error getting total logs: {e}")
+            print(f"Error getting total logs: {e}")
             return 0
     
     def clear_all(self) -> bool:
@@ -127,10 +122,9 @@ class CacheManager:
             keys = self.redis_client.keys("log:*")
             if keys:
                 self.redis_client.delete(*keys)
-            logger.info(f"Cleared {len(keys)} logs from cache")
             return True
         except Exception as e:
-            logger.error(f"Error clearing cache: {e}")
+            print(f"Error clearing cache: {e}")
             return False
 
 # Singleton instance

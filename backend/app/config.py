@@ -18,8 +18,6 @@ class Settings(BaseSettings):
     LOG_FILE_RETENTION_DAYS: int = 2
     
     # API
-    API_HOST: str = "0.0.0.0"
-    API_PORT: int = 8000
     CORS_ORIGINS: str
     
     # Performance

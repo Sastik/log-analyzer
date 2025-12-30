@@ -10,7 +10,6 @@ from app.config import settings
 logger = logging.getLogger(__name__)
 
 class QueryEngine:
-    """Unified query engine that searches both Redis cache and PostgreSQL"""
     
     def __init__(self):
         self.cache_retention_days = settings.LOG_FILE_RETENTION_DAYS
@@ -40,20 +39,18 @@ class QueryEngine:
                 from_db = True
                 
             elif strategy == "both":
-                # Query both and merge
                 cache_logs, cache_total = self._query_cache(filters)
                 db_logs, db_total = self._query_db(db, filters)
                 logs, total = self._merge_results(cache_logs, db_logs)
                 from_cache = True
                 from_db = True
             
-            else:  # auto
+            else:  
                 # Try cache first, then DB if needed
                 logs, total = self._query_cache(filters)
                 from_cache = True
                 
                 if total == 0 or total < filters.limit:
-                    # Also check DB
                     db_logs, db_total = self._query_db(db, filters)
                     if db_logs:
                         logs, total = self._merge_results(logs, db_logs)
@@ -67,18 +64,14 @@ class QueryEngine:
             )
             
         except Exception as e:
-            logger.error(f"Error querying logs: {e}")
+            print(f"Error querying logs: {e}")
             raise
     
     def _determine_strategy(self, filters: LogFilter) -> str:
-        """
-        Determine whether to query cache, DB, or both
-        Returns: 'cache_only', 'db_only', 'both', or 'auto'
-        """
+ 
         now = datetime.now()
         cache_cutoff = now - timedelta(days=self.cache_retention_days)
         
-        # If specific correlation ID, check cache first
         if filters.correlation_id:
             return "auto"  # Try cache first, fallback to DB
         

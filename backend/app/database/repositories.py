@@ -4,9 +4,7 @@ from app.database.connection import LogEntryTable
 from app.models.query_models import LogFilter
 from typing import List, Dict, Any, Tuple
 from datetime import datetime, timedelta
-import logging
 
-logger = logging.getLogger(__name__)
 
 class LogRepository:
     
@@ -68,7 +66,7 @@ class LogRepository:
             return logs, total
             
         except Exception as e:
-            logger.error(f"Error querying logs from DB: {e}")
+            print(f"Error querying logs from DB: {e}")
             raise
     
     @staticmethod
@@ -100,7 +98,7 @@ class LogRepository:
             ]
             
         except Exception as e:
-            logger.error(f"Error getting error stats: {e}")
+            print(f"Error getting error stats: {e}")
             raise
     
     @staticmethod
@@ -157,5 +155,5 @@ class LogRepository:
             }
             
         except Exception as e:
-            logger.error(f"Error getting analytics: {e}")
+            print(f"Error getting analytics: {e}")
             raise
