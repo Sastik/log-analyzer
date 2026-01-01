@@ -1,212 +1,314 @@
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 from typing import Optional, List
 from datetime import datetime, timedelta
 from app.database.connection import get_db
-from app.database.repositories import LogRepository
-from app.models.query_models import ErrorStatsResponse, AnalyticsResponse
 from app.core.cache_manager import cache_manager
-
+from app.database.repositories import LogRepository
+from collections import defaultdict
 
 router = APIRouter(prefix="/api/analytics", tags=["analytics"])
 
-@router.get("/overview", response_model=AnalyticsResponse)
-async def get_analytics_overview(
-    start_date: Optional[datetime] = Query(None, description="Start date"),
-    end_date: Optional[datetime] = Query(None, description="End date"),
-    db: Session = Depends(get_db)
+
+@router.get("/stats")
+async def get_dashboard_stats(
+    db: Session = Depends(get_db),
+    start_date: Optional[datetime] = None,
+    end_date: Optional[datetime] = None,
+    api_name: Optional[str] = None,
+    service_name: Optional[str] = None
 ):
-    """
-    Get analytics overview including total logs, error count, and breakdowns
-    """
+    """Get dashboard statistics (total logs, success, error counts, success rate)"""
     try:
-        # Default to last 7 days if no dates provided
+        # Default to last 7 days if no date range provided
         if not end_date:
             end_date = datetime.now()
         if not start_date:
             start_date = end_date - timedelta(days=7)
         
-        analytics = LogRepository.get_analytics(db, start_date, end_date)
+        # Query cache for recent logs (last 2 days)
+        cache_logs = cache_manager.get_logs_by_pattern("log:*")
         
-        return AnalyticsResponse(**analytics)
-        
-    except Exception as e:
-        print(f"Error fetching analytics: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-@router.get("/errors", response_model=List[ErrorStatsResponse])
-async def get_error_stats(
-    start_date: Optional[datetime] = Query(None, description="Start date"),
-    end_date: Optional[datetime] = Query(None, description="End date"),
-    db: Session = Depends(get_db)
-):
-    """
-    Get error statistics by API
-    Returns which APIs had the most errors in the given time period
-    """
-    try:
-        # Default to last 7 days if no dates provided
-        if not end_date:
-            end_date = datetime.now()
-        if not start_date:
-            start_date = end_date - timedelta(days=7)
-        
-        error_stats = LogRepository.get_error_stats(db, start_date, end_date)
-        
-        return [ErrorStatsResponse(**stat) for stat in error_stats]
-        
-    except Exception as e:
-        print(f"Error fetching error stats: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-@router.get("/api-performance")
-async def get_api_performance(
-    api_name: Optional[str] = Query(None, description="Filter by API name"),
-    start_date: Optional[datetime] = Query(None, description="Start date"),
-    end_date: Optional[datetime] = Query(None, description="End date"),
-    db: Session = Depends(get_db)
-):
-    """
-    Get performance metrics for APIs
-    Returns average duration, error rate, etc.
-    """
-    try:
-        from sqlalchemy import func, and_
-        from app.database.connection import LogEntryTable
-        
-        # Default to last 24 hours if no dates provided
-        if not end_date:
-            end_date = datetime.now()
-        if not start_date:
-            start_date = end_date - timedelta(hours=24)
-        
-        query = db.query(
-            LogEntryTable.api_name,
-            func.count(LogEntryTable.id).label('total_requests'),
-            func.avg(LogEntryTable.duration_ms).label('avg_duration'),
-            func.max(LogEntryTable.duration_ms).label('max_duration'),
-            func.min(LogEntryTable.duration_ms).label('min_duration'),
-            func.sum(
-                func.case(
-                    (LogEntryTable.log_level == 'ERROR', 1),
-                    else_=0
-                )
-            ).label('error_count')
-        ).filter(
-            and_(
-                LogEntryTable.timestamp >= start_date,
-                LogEntryTable.timestamp <= end_date
-            )
+        # Query database for older logs
+        db_logs, _ = LogRepository.get_logs_by_filter(
+            db, 
+            start_date=start_date,
+            end_date=end_date,
+            api_name=api_name,
+            service_name=service_name,
+            limit=10000
         )
         
-        if api_name:
-            query = query.filter(LogEntryTable.api_name == api_name)
+        # Combine logs
+        all_logs = cache_logs + db_logs
         
-        results = query.group_by(LogEntryTable.api_name).all()
+        # Filter by date range
+        filtered_logs = []
+        for log in all_logs:
+            try:
+                log_time = datetime.fromisoformat(log.get('timestamp', '').replace('Z', '+00:00'))
+                if start_date <= log_time <= end_date:
+                    if api_name and log.get('apiName') != api_name:
+                        continue
+                    if service_name and log.get('serviceName') != service_name:
+                        continue
+                    filtered_logs.append(log)
+            except:
+                continue
         
-        performance_data = []
-        for r in results:
-            total = r.total_requests or 0
-            errors = r.error_count or 0
-            
-            performance_data.append({
-                "api_name": r.api_name,
-                "total_requests": total,
-                "avg_duration_ms": round(r.avg_duration, 2) if r.avg_duration else 0,
-                "max_duration_ms": r.max_duration or 0,
-                "min_duration_ms": r.min_duration or 0,
-                "error_count": errors,
-                "error_rate": round((errors / total * 100), 2) if total > 0 else 0
-            })
-        
-        return performance_data
-        
-    except Exception as e:
-        print(f"Error fetching API performance: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-@router.get("/service-performance")
-async def get_service_performance(
-    service_name: Optional[str] = Query(None, description="Filter by service name"),
-    api_name: Optional[str] = Query(None, description="Filter by API name"),
-    start_date: Optional[datetime] = Query(None, description="Start date"),
-    end_date: Optional[datetime] = Query(None, description="End date"),
-    db: Session = Depends(get_db)
-):
-    """
-    Get performance metrics for services
-    """
-    try:
-        from sqlalchemy import func, and_
-        from app.database.connection import LogEntryTable
-        
-        # Default to last 24 hours if no dates provided
-        if not end_date:
-            end_date = datetime.now()
-        if not start_date:
-            start_date = end_date - timedelta(hours=24)
-        
-        query = db.query(
-            LogEntryTable.service_name,
-            LogEntryTable.api_name,
-            func.count(LogEntryTable.id).label('total_requests'),
-            func.avg(LogEntryTable.duration_ms).label('avg_duration'),
-            func.sum(
-                func.case(
-                    (LogEntryTable.log_level == 'ERROR', 1),
-                    else_=0
-                )
-            ).label('error_count')
-        ).filter(
-            and_(
-                LogEntryTable.timestamp >= start_date,
-                LogEntryTable.timestamp <= end_date
-            )
-        )
-        
-        if service_name:
-            query = query.filter(LogEntryTable.service_name == service_name)
-        
-        if api_name:
-            query = query.filter(LogEntryTable.api_name == api_name)
-        
-        results = query.group_by(
-            LogEntryTable.service_name,
-            LogEntryTable.api_name
-        ).all()
-        
-        service_data = []
-        for r in results:
-            total = r.total_requests or 0
-            errors = r.error_count or 0
-            
-            service_data.append({
-                "service_name": r.service_name,
-                "api_name": r.api_name,
-                "total_requests": total,
-                "avg_duration_ms": round(r.avg_duration, 2) if r.avg_duration else 0,
-                "error_count": errors,
-                "error_rate": round((errors / total * 100), 2) if total > 0 else 0
-            })
-        
-        return service_data
-        
-    except Exception as e:
-        print(f"Error fetching service performance: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-@router.get("/cache-stats")
-async def get_cache_stats():
-    """Get Redis cache statistics"""
-    try:
-        total_logs = cache_manager.get_total_logs()
+        # Calculate statistics
+        total_logs = len(filtered_logs)
+        error_logs = sum(1 for log in filtered_logs if log.get('logLevel') == 'ERROR')
+        success_logs = total_logs - error_logs
+        success_rate = (success_logs / total_logs * 100) if total_logs > 0 else 0
         
         return {
-            "total_logs_in_cache": total_logs,
-            "ttl_days": cache_manager.ttl // (24 * 60 * 60),
-            "status": "healthy" if total_logs >= 0 else "error"
+            "total_logs": total_logs,
+            "success_logs": success_logs,
+            "error_logs": error_logs,
+            "success_rate": round(success_rate, 2)
         }
-        
+    
     except Exception as e:
-        print(f"Error fetching cache stats: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        print(f"Error getting dashboard stats: {e}")
+        return {
+            "total_logs": 0,
+            "success_logs": 0,
+            "error_logs": 0,
+            "success_rate": 0
+        }
+
+
+@router.get("/logs-per-day")
+async def get_logs_per_day(
+    db: Session = Depends(get_db),
+    start_date: Optional[datetime] = None,
+    end_date: Optional[datetime] = None,
+    api_name: Optional[str] = None,
+    service_name: Optional[str] = None
+):
+    """Get error and success logs grouped by day for column chart"""
+    try:
+        if not end_date:
+            end_date = datetime.now()
+        if not start_date:
+            start_date = end_date - timedelta(days=7)
+        
+        # Query logs
+        cache_logs = cache_manager.get_logs_by_pattern("log:*")
+        db_logs, _ = LogRepository.get_logs_by_filter(
+            db, 
+            start_date=start_date,
+            end_date=end_date,
+            api_name=api_name,
+            service_name=service_name,
+            limit=10000
+        )
+        
+        all_logs = cache_logs + db_logs
+        
+        # Group by day
+        daily_stats = defaultdict(lambda: {"date": "", "error": 0, "success": 0})
+        
+        for log in all_logs:
+            try:
+                log_time = datetime.fromisoformat(log.get('timestamp', '').replace('Z', '+00:00'))
+                if start_date <= log_time <= end_date:
+                    if api_name and log.get('apiName') != api_name:
+                        continue
+                    if service_name and log.get('serviceName') != service_name:
+                        continue
+                    
+                    day_key = log_time.strftime('%Y-%m-%d')
+                    daily_stats[day_key]["date"] = day_key
+                    
+                    if log.get('logLevel') == 'ERROR':
+                        daily_stats[day_key]["error"] += 1
+                    else:
+                        daily_stats[day_key]["success"] += 1
+            except:
+                continue
+        
+        # Convert to sorted list
+        result = sorted(daily_stats.values(), key=lambda x: x["date"])
+        
+        return result
+    
+    except Exception as e:
+        print(f"Error getting logs per day: {e}")
+        return []
+
+
+@router.get("/error-distribution")
+async def get_error_distribution(
+    db: Session = Depends(get_db),
+    date: Optional[str] = None,
+    api_name: Optional[str] = None,
+    service_name: Optional[str] = None
+):
+    """Get error distribution by type for pie chart"""
+    try:
+        # Parse date
+        if date:
+            target_date = datetime.fromisoformat(date)
+            start_date = target_date.replace(hour=0, minute=0, second=0)
+            end_date = target_date.replace(hour=23, minute=59, second=59)
+        else:
+            end_date = datetime.now()
+            start_date = end_date.replace(hour=0, minute=0, second=0)
+        
+        # Query logs
+        cache_logs = cache_manager.get_logs_by_pattern("log:*")
+        db_logs, _ = LogRepository.get_logs_by_filter(
+            db, 
+            start_date=start_date,
+            end_date=end_date,
+            api_name=api_name,
+            service_name=service_name,
+            limit=10000
+        )
+        
+        all_logs = cache_logs + db_logs
+        
+        # Count errors by service and API
+        error_distribution = defaultdict(int)
+        
+        for log in all_logs:
+            try:
+                log_time = datetime.fromisoformat(log.get('timestamp', '').replace('Z', '+00:00'))
+                if start_date <= log_time <= end_date:
+                    if log.get('logLevel') == 'ERROR':
+                        if api_name and log.get('apiName') != api_name:
+                            continue
+                        if service_name and log.get('serviceName') != service_name:
+                            continue
+                        
+                        error_key = f"{log.get('apiName', 'Unknown')} - {log.get('serviceName', 'Unknown')}"
+                        error_distribution[error_key] += 1
+            except:
+                continue
+        
+        # Convert to list for pie chart
+        result = [
+            {"name": key, "value": value}
+            for key, value in error_distribution.items()
+        ]
+        
+        return result
+    
+    except Exception as e:
+        print(f"Error getting error distribution: {e}")
+        return []
+
+
+@router.get("/top-response-time-urls")
+async def get_top_response_time_urls(
+    db: Session = Depends(get_db),
+    start_date: Optional[datetime] = None,
+    end_date: Optional[datetime] = None,
+    limit: int = Query(default=10, le=50)
+):
+    """Get top URLs by response time"""
+    try:
+        if not end_date:
+            end_date = datetime.now()
+        if not start_date:
+            start_date = end_date - timedelta(days=7)
+        
+        # Query logs
+        cache_logs = cache_manager.get_logs_by_pattern("log:*")
+        db_logs, _ = LogRepository.get_logs_by_filter(
+            db, 
+            start_date=start_date,
+            end_date=end_date,
+            limit=10000
+        )
+        
+        all_logs = cache_logs + db_logs
+        
+        # Calculate average response time per URL
+        url_stats = defaultdict(lambda: {"total_time": 0, "count": 0})
+        
+        for log in all_logs:
+            try:
+                log_time = datetime.fromisoformat(log.get('timestamp', '').replace('Z', '+00:00'))
+                if start_date <= log_time <= end_date:
+                    url = log.get('url')
+                    duration = log.get('durationMs')
+                    
+                    if url and duration is not None:
+                        url_stats[url]["total_time"] += duration
+                        url_stats[url]["count"] += 1
+            except:
+                continue
+        
+        # Calculate averages and sort
+        url_avg = []
+        for url, stats in url_stats.items():
+            avg_time = stats["total_time"] / stats["count"] if stats["count"] > 0 else 0
+            url_avg.append({
+                "url": url,
+                "avg_response_time": round(avg_time, 2),
+                "count": stats["count"]
+            })
+        
+        # Sort by avg response time descending
+        url_avg.sort(key=lambda x: x["avg_response_time"], reverse=True)
+        
+        return url_avg[:limit]
+    
+    except Exception as e:
+        print(f"Error getting top response time URLs: {e}")
+        return []
+
+
+@router.get("/url-heat-map")
+async def get_url_heat_map(
+    db: Session = Depends(get_db),
+    start_date: Optional[datetime] = None,
+    end_date: Optional[datetime] = None,
+    limit: int = Query(default=20, le=100)
+):
+    """Get URL access frequency for heat map"""
+    try:
+        if not end_date:
+            end_date = datetime.now()
+        if not start_date:
+            start_date = end_date - timedelta(days=7)
+        
+        # Query logs
+        cache_logs = cache_manager.get_logs_by_pattern("log:*")
+        db_logs, _ = LogRepository.get_logs_by_filter(
+            db, 
+            start_date=start_date,
+            end_date=end_date,
+            limit=10000
+        )
+        
+        all_logs = cache_logs + db_logs
+        
+        # Count URL access
+        url_count = defaultdict(int)
+        
+        for log in all_logs:
+            try:
+                log_time = datetime.fromisoformat(log.get('timestamp', '').replace('Z', '+00:00'))
+                if start_date <= log_time <= end_date:
+                    url = log.get('url')
+                    if url:
+                        url_count[url] += 1
+            except:
+                continue
+        
+        # Sort by count
+        result = [
+            {"url": url, "count": count}
+            for url, count in url_count.items()
+        ]
+        result.sort(key=lambda x: x["count"], reverse=True)
+        
+        return result[:limit]
+    
+    except Exception as e:
+        print(f"Error getting URL heat map: {e}")
+        return []

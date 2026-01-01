@@ -1,0 +1,86 @@
+@use '../variables' as *;
+
+.dashboard {
+  min-height: 100vh;
+  background: $bg-secondary;
+  padding: $spacing-xl;
+  
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $spacing-2xl;
+    flex-wrap: wrap;
+    gap: $spacing-md;
+  }
+  
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    
+    h1 {
+      font-size: $font-size-3xl;
+      font-weight: $font-weight-bold;
+      color: $text-primary;
+      margin-bottom: $spacing-xs;
+    }
+    
+    p {
+      color: $text-secondary;
+      font-size: $font-size-base;
+    }
+  }
+  
+  &__icon {
+    color: $primary-500;
+  }
+  
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+  }
+}
+
+.status-badge {
+  padding: $spacing-sm $spacing-md;
+  border-radius: $radius-full;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  
+  &--connected {
+    background: $success-50;
+    color: $success-700;
+  }
+  
+  &--disconnected {
+    background: $error-50;
+    color: $error-700;
+  }
+  
+  &__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: $radius-full;
+    
+    .status-badge--connected & {
+      background: $success-500;
+      animation: pulse 2s infinite;
+    }
+    
+    .status-badge--disconnected & {
+      background: $error-500;
+    }
+  }
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: $spacing-lg;
+  margin-bottom: $spacing-2xl;
+}

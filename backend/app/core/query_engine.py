@@ -1,9 +1,10 @@
 from typing import List, Dict, Any, Tuple
 from datetime import datetime, timedelta
+from app.database import repositories
 from sqlalchemy.orm import Session
 from app.models.query_models import LogFilter, LogResponse
 from app.core.cache_manager import cache_manager
-from app.database.repositories import LogRepository
+
 from app.config import settings
 
 
@@ -130,7 +131,7 @@ class QueryEngine:
     def _query_db(self, db: Session, filters: LogFilter) -> Tuple[List[Dict], int]:
         """Query logs from PostgreSQL"""
         try:
-            logs, total = LogRepository.get_logs_by_filter(db, filters)
+            logs, total = repositories.LogRepository.get_logs_by_filter(db, filters)
             return logs, total
         except Exception as e:
             print(f"Error querying database: {e}")

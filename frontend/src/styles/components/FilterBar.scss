@@ -1,0 +1,93 @@
+@use '../variables' as *;
+
+.filter-bar {
+  background: $bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-xl;
+  box-shadow: $shadow-sm;
+  border: 1px solid $border-light;
+  
+  &__fields {
+    display: flex;
+    gap: $spacing-md;
+    align-items: flex-end;
+    flex-wrap: wrap;
+  }
+}
+
+.form-field {
+  flex: 1;
+  min-width: 200px;
+  
+  label {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+    margin-bottom: $spacing-sm;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $text-secondary;
+  }
+  
+  select,
+  input {
+    width: 100%;
+    padding: 10px $spacing-md;
+    border: 1px solid $border-light;
+    border-radius: $radius-md;
+    font-size: $font-size-sm;
+    background: $bg-primary;
+    cursor: pointer;
+    transition: all $transition-fast;
+    
+    &:hover {
+      border-color: $border-medium;
+    }
+    
+    &:focus {
+      outline: none;
+      border-color: $primary-500;
+      box-shadow: 0 0 0 3px rgba($primary-500, 0.1);
+    }
+  }
+}
+
+.btn {
+  padding: 10px $spacing-lg;
+  border: none;
+  border-radius: $radius-md;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  transition: all $transition-fast;
+  min-width: 120px;
+  justify-content: center;
+  
+  &--primary {
+    background: linear-gradient(135deg, $primary-500 0%, $primary-700 100%);
+    color: $white;
+    box-shadow: 0 2px 8px rgba($primary-500, 0.3);
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba($primary-500, 0.4);
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
+  }
+  
+  &--secondary {
+    background: $gray-100;
+    color: $text-primary;
+    
+    &:hover {
+      background: $gray-200;
+    }
+  }
+}

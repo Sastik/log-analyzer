@@ -208,3 +208,472 @@
     }
 }
 **********11223344-aaaa-cccc-dddd-eeeeffff0000**********
+**********81e03365-7fb4-4a25-8d16-2a9286d8aedb**********
+{
+    "timestamp": "2025-11-25T09:15:58+02:00",
+    "logLevel": "ERROR",
+    "apiName": "JobApi",
+    "serviceName": "fetchJobStatistics",
+    "thread": "http-nio-7023-exec-7",
+    "logger": "c.t.digital.audit.logger.FileLogger",
+    "sessionId": "d8d079b8-ab9f-423a-ad82-1847e8050010",
+    "correlationId": "81e03365-7fb4-4a25-8d16-2a9286d8aedb",
+    "type": "in",
+    "partyId": null,
+    "request": [
+        {
+            "userId": "26",
+            "role": null,
+            "noOfDaysMarker": null,
+            "skill": null,
+            "province": null,
+            "jobType": null,
+            "isNotification": true,
+            "notificationStatus": "Unread",
+            "deviceType": "WEB",
+            "category": null,
+            "isTenderApplicable": false
+        }
+    ],
+    "response": {
+        "code": "0",
+        "message": "",
+        "extendedMessage": null,
+        "status": "SUCCESS",
+        "hasError": false,
+        "responsePayload": {
+            "newJobCount": 0,
+            "unAssignedJobCount": 0,
+            "inprogressJobCount": 0,
+            "acceptedJobCount": 0,
+            "completedJobCount": 0,
+            "closedJobCount": 0,
+            "applicableCompletedJobCount": null,
+            "skillBasedCount": null,
+            "notificationCount": 1673,
+            "tenderJobCount": null,
+            "cancelJobCount": 0
+        }
+    },
+    "status": "SUCCESS",
+    "errorMessage": null,
+    "errorTrace": null,
+    "durationMs": 12,
+    "url": "https://insurancespuat.standardbank.co.za/user/common/fetchJobStatistics",
+    "logTime": "Mon Nov 25 09:15:58 SAST 2025",
+    "headerlog": {
+        "timestamp": "2025-11-25T09:15:58+02:00",
+        "logLevel": "ERROR",
+        "application": "JobApi",
+        "thread": "http-nio-7023-exec-7",
+        "logger": "c.t.digital.audit.logger.FileLogger",
+        "sessionId": "d8d079b8-ab9f-423a-ad82-1847e8050010",
+        "correlationId": "81e03365-7fb4-4a25-8d16-2a9286d8aedb",
+        "apkVersion": null,
+        "deviceName": null,
+        "digitalPlatform": "WEB",
+        "deviceVersion": null,
+        "host": "insurancespuat.standardbank.co.za",
+        "screenName": null
+    }
+}
+**********81e03365-7fb4-4a25-8d16-2a9286d8aedb**********
+**********81e03565-7fb4-4a25-8d16-2q9286d8aedb**********
+{
+    "timestamp": "2025-11-25T09:15:58+02:00",
+    "logLevel": "ERROR",
+    "apiName": "JobApi",
+    "serviceName": "fetchJobStatistics",
+    "thread": "http-nio-7023-exec-7",
+    "logger": "c.t.digital.audit.logger.FileLogger",
+    "sessionId": "d8d079b8-ab9f-423a-ad82-1847e8050010",
+    "correlationId": "81e03565-7fb4-4a25-8d16-2q9286d8aedb",
+    "type": "in",
+    "partyId": null,
+    "request": [
+        {
+            "userId": "26",
+            "role": null,
+            "noOfDaysMarker": null,
+            "skill": null,
+            "province": null,
+            "jobType": null,
+            "isNotification": true,
+            "notificationStatus": "Unread",
+            "deviceType": "WEB",
+            "category": null,
+            "isTenderApplicable": false
+        }
+    ],
+    "response": {
+        "code": "0",
+        "message": "",
+        "extendedMessage": null,
+        "status": "SUCCESS",
+        "hasError": false,
+        "responsePayload": {
+            "newJobCount": 0,
+            "unAssignedJobCount": 0,
+            "inprogressJobCount": 0,
+            "acceptedJobCount": 0,
+            "completedJobCount": 0,
+            "closedJobCount": 0,
+            "applicableCompletedJobCount": null,
+            "skillBasedCount": null,
+            "notificationCount": 1673,
+            "tenderJobCount": null,
+            "cancelJobCount": 0
+        }
+    },
+    "status": "SUCCESS",
+    "errorMessage": null,
+    "errorTrace": null,
+    "durationMs": 12,
+    "url": "https://insurancespuat.standardbank.co.za/user/common/fetchJobStatistics",
+    "logTime": "Mon Nov 25 09:15:58 SAST 2025",
+    "headerlog": {
+        "timestamp": "2025-11-25T09:15:58+02:00",
+        "logLevel": "ERROR",
+        "application": "JobApi",
+        "thread": "http-nio-7023-exec-7",
+        "logger": "c.t.digital.audit.logger.FileLogger",
+        "sessionId": "d8d079b8-ab9f-423a-ad82-1847e8050010",
+        "correlationId": "81e03565-7fb4-4a25-8d16-2q9286d8aedb",
+        "apkVersion": null,
+        "deviceName": null,
+        "digitalPlatform": "WEB",
+        "deviceVersion": null,
+        "host": "insurancespuat.standardbank.co.za",
+        "screenName": null
+    }
+}
+**********81e03565-7fb4-4a25-8d16-2q9286d8aedb**********
+**********81e03565-7fb4-4a25-8d16-2q9286d8aedb**********
+{
+    "timestamp": "2025-11-26T09:15:58+02:00",
+    "logLevel": "ERROR",
+    "apiName": "JobApi",
+    "serviceName": "fetchJobStatistics",
+    "thread": "http-nio-7023-exec-7",
+    "logger": "c.t.digital.audit.logger.FileLogger",
+    "sessionId": "d8d079b8-ab9f-423a-ad82-1847e8050010",
+    "correlationId": "81e03565-7fb4-4a25-8d16-2q9286d8aedb",
+    "type": "in",
+    "partyId": null,
+    "request": [
+        {
+            "userId": "26",
+            "role": null,
+            "noOfDaysMarker": null,
+            "skill": null,
+            "province": null,
+            "jobType": null,
+            "isNotification": true,
+            "notificationStatus": "Unread",
+            "deviceType": "WEB",
+            "category": null,
+            "isTenderApplicable": false
+        }
+    ],
+    "response": {
+        "code": "0",
+        "message": "",
+        "extendedMessage": null,
+        "status": "SUCCESS",
+        "hasError": false,
+        "responsePayload": {
+            "newJobCount": 0,
+            "unAssignedJobCount": 0,
+            "inprogressJobCount": 0,
+            "acceptedJobCount": 0,
+            "completedJobCount": 0,
+            "closedJobCount": 0,
+            "applicableCompletedJobCount": null,
+            "skillBasedCount": null,
+            "notificationCount": 1673,
+            "tenderJobCount": null,
+            "cancelJobCount": 0
+        }
+    },
+    "status": "SUCCESS",
+    "errorMessage": null,
+    "errorTrace": null,
+    "durationMs": 12,
+    "url": "https://insurancespuat.standardbank.co.za/user/common/fetchJobStatistics",
+    "logTime": "Mon Nov 26 09:15:58 SAST 2025",
+    "headerlog": {
+        "timestamp": "2025-11-26T09:15:58+02:00",
+        "logLevel": "ERROR",
+        "application": "JobApi",
+        "thread": "http-nio-7023-exec-7",
+        "logger": "c.t.digital.audit.logger.FileLogger",
+        "sessionId": "d8d079b8-ab9f-423a-ad82-1847e8050010",
+        "correlationId": "81e03565-7fb4-4a25-8d16-2q9286d8aedb",
+        "apkVersion": null,
+        "deviceName": null,
+        "digitalPlatform": "WEB",
+        "deviceVersion": null,
+        "host": "insurancespuat.standardbank.co.za",
+        "screenName": null
+    }
+}
+**********81e03565-7fb4-4a25-8d16-2q9286d8aedb**********
+**********f9e8d7p6-abba-bbbb-cccc-ddddeeeeffff**********
+{
+  "timestamp": "2025-11-24T10:05:12+02:00",
+  "logLevel": "ERROR",
+  "apiName": "JobApi",
+  "serviceName": "fetchJobStatistics",
+  "thread": "http-nio-7023-exec-9",
+  "logger": "c.t.digital.audit.logger.FileLogger",
+  "sessionId": "a1b2c3d4-1111-2222-3333-444455556666",
+  "correlationId": "f9e8d7p6-abba-bbbb-cccc-ddddeeeeffff",
+  "type": "in",
+  "partyId": null,
+  "request": [
+    {
+      "userId": "27",
+      "role": null,
+      "noOfDaysMarker": null,
+      "skill": null,
+      "province": null,
+      "jobType": null,
+      "isNotification": true,
+      "notificationStatus": "Unread",
+      "deviceType": "WEB",
+      "category": null,
+      "isTenderApplicable": false
+    }
+  ],
+  "response": {
+    "code": "0",
+    "message": "",
+    "extendedMessage": null,
+    "status": "SUCCESS",
+    "hasError": false,
+    "responsePayload": {
+      "newJobCount": 2,
+      "unAssignedJobCount": 1,
+      "inprogressJobCount": 3,
+      "acceptedJobCount": 4,
+      "completedJobCount": 10,
+      "closedJobCount": 1,
+      "applicableCompletedJobCount": null,
+      "skillBasedCount": null,
+      "notificationCount": 120,
+      "tenderJobCount": null,
+      "cancelJobCount": 0
+    }
+  },
+  "status": "SUCCESS",
+  "errorMessage": null,
+  "errorTrace": null,
+  "durationMs": 15,
+  "url": "https://insurancespuat.standardbank.co.za/job/common/fetchJobStatistics",
+  "logTime": "Mon Nov 24 10:05:12 SAST 2025",
+  "headerlog": {
+        "timestamp": "2025-11-24T09:15:58+02:00",
+        "logLevel": "ERROR",
+        "application": "JobApi",
+        "thread": "http-nio-7023-exec-7",
+        "logger": "c.t.digital.audit.logger.FileLogger",
+        "sessionId": "d8d079b8-ab9f-423a-ad82-1847e8050010",
+        "correlationId": "f9e8d7p6-abba-bbbb-cccc-ddddeeeeffff",
+        "apkVersion": null,
+        "deviceName": null,
+        "digitalPlatform": "WEB",
+        "deviceVersion": null,
+        "host": "insurancespuat.standardbank.co.za",
+        "screenName": null
+    }
+}
+**********f9e8d7p6-abba-bbbb-cccc-ddddeeeeffff**********
+**********a7c9e123-cccc-dddd-eeee-999988887777**********
+{
+  "timestamp": "2025-11-25T14:22:45+02:00",
+  "logLevel": "INFO",
+  "apiName": "UserApi",
+  "serviceName": "fetchUserDashboard",
+  "thread": "http-nio-7023-exec-3",
+  "logger": "c.t.digital.audit.logger.FileLogger",
+  "sessionId": "bbbb1111-2222-3333-4444-ccccdddd5555",
+  "correlationId": "a7c9e123-cccc-dddd-eeee-999988887777",
+  "type": "out",
+  "partyId": "USR-1023",
+  "request": [
+    {
+      "userId": "1023",
+      "role": "ADMIN",
+      "noOfDaysMarker": 30,
+      "skill": "JAVA",
+      "province": "GAUTENG",
+      "jobType": "FULL_TIME",
+      "isNotification": true,
+      "notificationStatus": "Read",
+      "deviceType": "WEB",
+      "category": "TECH",
+      "isTenderApplicable": true
+    }
+  ],
+  "response": {
+    "code": "0",
+    "message": "Dashboard data fetched successfully",
+    "extendedMessage": null,
+    "status": "SUCCESS",
+    "hasError": false,
+    "responsePayload": {
+      "activeUserCount": 25,
+      "inactiveUserCount": 3,
+      "pendingApprovalCount": 2,
+      "totalJobCount": 45,
+      "notificationCount": 87,
+      "lastLoginDays": 1
+    }
+  },
+  "status": "SUCCESS",
+  "errorMessage": null,
+  "errorTrace": null,
+  "durationMs": 22,
+  "url": "https://insurancespuat.standardbank.co.za/user/dashboard/fetch",
+  "logTime": "Tue Nov 25 14:22:45 SAST 2025",
+  "headerlog": {
+        "timestamp": "2025-11-25T14:22:43+02:00",
+        "logLevel": "INFO",
+        "application": "UserApi",
+        "thread": "http-nio-7023-exec-3",
+        "logger": "c.t.digital.audit.logger.FileLogger",
+        "sessionId": "bbbb1111-2222-3333-4444-ccccdddd5555",
+        "correlationId": "a7c9e123-cccc-dddd-eeee-999988887777",
+        "apkVersion": "1.2.5",
+        "deviceName": "Chrome",
+        "digitalPlatform": "WEB",
+        "deviceVersion": "118.0",
+        "host": "insurancespuat.standardbank.co.za",
+        "screenName": "UserDashboard"
+    }
+}
+**********a7c9e123-cccc-dddd-eeee-999988887777**********
+**********bb12cd34-eeee-ffff-aaaa-123456789abc**********
+{
+  "timestamp": "2025-11-26T18:40:09+02:00",
+  "logLevel": "ERROR",
+  "apiName": "NotificationApi",
+  "serviceName": "fetchUserNotifications",
+  "thread": "http-nio-7023-exec-12",
+  "logger": "c.t.digital.audit.logger.FileLogger",
+  "sessionId": "9999aaaa-bbbb-cccc-dddd-eeeeffff0000",
+  "correlationId": "bb12cd34-eeee-ffff-aaaa-123456789abc",
+  "type": "in",
+  "partyId": "USR-8891",
+  "request": [
+    {
+      "userId": "8891",
+      "role": "USER",
+      "noOfDaysMarker": 7,
+      "skill": null,
+      "province": "WESTERN_CAPE",
+      "jobType": null,
+      "isNotification": true,
+      "notificationStatus": "Unread",
+      "deviceType": "MOBILE",
+      "category": null,
+      "isTenderApplicable": false
+    }
+  ],
+  "response": {
+    "code": "E404",
+    "message": "Notification service unavailable",
+    "extendedMessage": "Downstream notification service timeout",
+    "status": "FAILED",
+    "hasError": true,
+    "responsePayload": null
+  },
+  "status": "FAILED",
+  "errorMessage": "Timeout while calling notification microservice",
+  "errorTrace": "java.net.SocketTimeoutException: Read timed out",
+  "durationMs": 3012,
+  "url": "https://insurancespuat.standardbank.co.za/notification/fetch",
+  "logTime": "Wed Nov 26 18:40:09 SAST 2025",
+  "headerlog": {
+        "timestamp": "2025-11-26T18:40:06+02:00",
+        "logLevel": "ERROR",
+        "application": "NotificationApi",
+        "thread": "http-nio-7023-exec-12",
+        "logger": "c.t.digital.audit.logger.FileLogger",
+        "sessionId": "9999aaaa-bbbb-cccc-dddd-eeeeffff0000",
+        "correlationId": "bb12cd34-eeee-ffff-aaaa-123456789abc",
+        "apkVersion": "2.0.1",
+        "deviceName": "Android",
+        "digitalPlatform": "MOBILE",
+        "deviceVersion": "14",
+        "host": "insurancespuat.standardbank.co.za",
+        "screenName": "NotificationList"
+    }
+}
+**********bb12cd34-eeee-ffff-aaaa-123456789abc**********
+**********e45f9a77-1122-3344-5566-aabbccddeeff**********
+{
+  "timestamp": "2025-11-27T08:55:31+02:00",
+  "logLevel": "INFO",
+  "apiName": "PaymentApi",
+  "serviceName": "initiatePayment",
+  "thread": "http-nio-7023-exec-5",
+  "logger": "c.t.digital.audit.logger.FileLogger",
+  "sessionId": "7777aaaa-1111-2222-3333-bbbbccccdddd",
+  "correlationId": "e45f9a77-1122-3344-5566-aabbccddeeff",
+  "type": "in",
+  "partyId": "USR-4509",
+  "request": [
+    {
+      "userId": "4509",
+      "role": "CUSTOMER",
+      "noOfDaysMarker": null,
+      "skill": null,
+      "province": "KWAZULU_NATAL",
+      "jobType": null,
+      "isNotification": false,
+      "notificationStatus": null,
+      "deviceType": "WEB",
+      "category": "PAYMENT",
+      "isTenderApplicable": false,
+      "amount": 1250.75,
+      "currency": "ZAR",
+      "paymentMethod": "CARD"
+    }
+  ],
+  "response": {
+    "code": "0",
+    "message": "Payment initiated successfully",
+    "extendedMessage": null,
+    "status": "SUCCESS",
+    "hasError": false,
+    "responsePayload": {
+      "transactionId": "TXN-9988776655",
+      "paymentStatus": "PENDING",
+      "gateway": "PAYFAST",
+      "retryAllowed": true
+    }
+  },
+  "status": "SUCCESS",
+  "errorMessage": null,
+  "errorTrace": null,
+  "durationMs": 48,
+  "url": "https://insurancespuat.standardbank.co.za/payment/initiate",
+  "logTime": "Thu Nov 27 08:55:31 SAST 2025",
+  "headerlog": {
+        "timestamp": "2025-11-27T08:55:29+02:00",
+        "logLevel": "INFO",
+        "application": "PaymentApi",
+        "thread": "http-nio-7023-exec-5",
+        "logger": "c.t.digital.audit.logger.FileLogger",
+        "sessionId": "7777aaaa-1111-2222-3333-bbbbccccdddd",
+        "correlationId": "e45f9a77-1122-3344-5566-aabbccddeeff",
+        "apkVersion": null,
+        "deviceName": "Chrome",
+        "digitalPlatform": "WEB",
+        "deviceVersion": "120.0",
+        "host": "insurancespuat.standardbank.co.za",
+        "screenName": "PaymentScreen"
+    }
+}
+**********e45f9a77-1122-3344-5566-aabbccddeeff**********

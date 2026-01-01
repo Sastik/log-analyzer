@@ -106,18 +106,16 @@ class FileWatcher:
                     if correlation_id:
                         cache_manager.set_log(correlation_id, log_data)
                         print(f"Cached log: {correlation_id}")
-                        
+
                         if self.websocket_manager:
-                            import asyncio
                             try:
-                                loop = asyncio.get_event_loop()
-                                if loop.is_running():
-                                    asyncio.run_coroutine_threadsafe(
-                                        self.websocket_manager.broadcast_log(log_data),
-                                        loop
-                                    )
-                            except:
-                                pass
+                                import asyncio
+                                loop = asyncio.get_running_loop()
+                                asyncio.create_task(
+                                    self.websocket_manager.broadcast_log(log_data)
+                                )
+                            except RuntimeError:
+                                print(f"No event loop available for WebSocket broadcast")
                 
         except Exception as e:
             print(f"Error parsing and caching logs: {e}")

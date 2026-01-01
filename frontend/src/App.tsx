@@ -1,24 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-import Layout from "./components/layout/Layout";
-import Dashboard from "./components/dashboard/Dashboard";
+import Dashboard from "./pages/Dashboard";
 
-
-const Logs = () => (
-  <div style={{ padding: "2rem" }}>
-    <h2>Logs Page - Coming Soon</h2>
-  </div>
-);
-const Analytics = () => (
-  <div style={{ padding: "2rem" }}>
-    <h2>Analytics Page - Coming Soon</h2>
-  </div>
-);
-const LiveView = () => (
-  <div style={{ padding: "2rem" }}>
-    <h2>Live View Page - Coming Soon</h2>
-  </div>
-);
 
 function App() {
   return (
@@ -49,11 +32,8 @@ function App() {
         }}
       />
       <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Dashboard />} />
-          <Route path="logs" element={<Logs />} />
-          <Route path="analytics" element={<Analytics />} />
-          <Route path="live" element={<LiveView />} />
+        <Route path="/" element={<Dashboard />}>
+          
         </Route>
       </Routes>
     </BrowserRouter>

@@ -1,0 +1,74 @@
+@use '../variables' as *;
+
+.stat-card {
+  background: $bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-sm;
+  border: 1px solid $border-light;
+  transition: all $transition-fast;
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-lg;
+  }
+  
+  &__content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  
+  &__info {
+    flex: 1;
+  }
+  
+  &__title {
+    color: $text-secondary;
+    font-size: $font-size-sm;
+    margin-bottom: $spacing-sm;
+    font-weight: $font-weight-medium;
+  }
+  
+  &__value {
+    font-size: $font-size-3xl;
+    font-weight: $font-weight-bold;
+    color: $text-primary;
+    margin-bottom: $spacing-xs;
+    line-height: 1;
+  }
+  
+  &__subtitle {
+    color: $text-tertiary;
+    font-size: $font-size-xs;
+  }
+  
+  &__icon {
+    border-radius: $radius-lg;
+    padding: $spacing-md;
+    color: $white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    &--primary {
+      background: linear-gradient(135deg, $primary-500 0%, $primary-700 100%);
+    }
+    
+    &--success {
+      background: linear-gradient(135deg, $success-500 0%, $success-700 100%);
+    }
+    
+    &--error {
+      background: linear-gradient(135deg, $error-500 0%, $error-700 100%);
+    }
+    
+    &--warning {
+      background: linear-gradient(135deg, $warning-500 0%, $warning-700 100%);
+    }
+    
+    &--info {
+      background: linear-gradient(135deg, $secondary-500 0%, $secondary-700 100%);
+    }
+  }
+}
